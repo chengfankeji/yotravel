@@ -16,6 +16,7 @@ import {
   Sparkles,
   TrainFront,
   X,
+  Loader2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
@@ -109,7 +110,7 @@ const tripStack: Array<[string, LucideIcon]> = [
 ];
 
 const ctaButton =
-  "md-ripple inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:bg-teal-800 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-teal-300 active:scale-[0.99]";
+  "md-ripple inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-900/20 transition hover:bg-teal-800 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-teal-300 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed";
 
 const navSecondaryButton =
   "md-ripple inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-teal-700/30 bg-white/40 px-4 py-2 text-xs font-semibold text-teal-800 transition hover:border-teal-700/50 hover:bg-teal-50 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-teal-300 active:scale-[0.99] sm:px-5 sm:text-sm";
@@ -122,11 +123,14 @@ export default function Home() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [email, setEmail] = useState("");
   const [tripDate, setTripDate] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [isMessageSuccess, setIsMessageSuccess] = useState(false);
   const [messageEmail, setMessageEmail] = useState("");
   const [travelWindow, setTravelWindow] = useState("");
   const [message, setMessage] = useState("");
+  const [isMessageSubmitting, setIsMessageSubmitting] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow =
@@ -155,8 +159,10 @@ export default function Home() {
     setIsMessageModalOpen(false);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  // 处理 VIP 购买意向提交（连通钉钉 API）
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
     const leadCapture: LeadCapture = {
       email,
@@ -164,15 +170,37 @@ export default function Home() {
       submittedAt: new Date().toISOString(),
     };
 
-    window.localStorage.setItem(
-      "yotravel-payment-intent",
-      JSON.stringify(leadCapture),
-    );
-    setIsSuccess(true);
+    try {
+      // 离线/本地备份
+      window.localStorage.setItem(
+        "yotravel-payment-intent",
+        JSON.stringify(leadCapture),
+      );
+
+      // 发送至钉钉后端 API
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadCapture),
+      });
+
+      if (res.ok) {
+        setIsSuccess(true);
+      } else {
+        alert("Submission failed, please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error, please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleMessageSubmit = (event: FormEvent<HTMLFormElement>) => {
+  // 处理咨询留言提交（连通钉钉 API）
+  const handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsMessageSubmitting(true);
 
     const messageCapture: MessageCapture = {
       email: messageEmail,
@@ -181,11 +209,31 @@ export default function Home() {
       submittedAt: new Date().toISOString(),
     };
 
-    window.localStorage.setItem(
-      "yotravel-message-intent",
-      JSON.stringify(messageCapture),
-    );
-    setIsMessageSuccess(true);
+    try {
+      // 离线/本地备份
+      window.localStorage.setItem(
+        "yotravel-message-intent",
+        JSON.stringify(messageCapture),
+      );
+
+      // 发送至钉钉后端 API
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(messageCapture),
+      });
+
+      if (res.ok) {
+        setIsMessageSuccess(true);
+      } else {
+        alert("Failed to send message, please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error, please try again.");
+    } finally {
+      setIsMessageSubmitting(false);
+    }
   };
 
   return (
@@ -205,14 +253,14 @@ export default function Home() {
             <span className="text-lg font-bold text-slate-950">YoTravel</span>
           </a>
           <div className="flex flex-wrap items-center justify-end gap-2">
-          <button
-            type="button"
-            onClick={openPaymentIntent}
-            className="md-ripple inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-teal-900/20 transition hover:bg-teal-800 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-teal-300 active:scale-[0.99] sm:px-5 sm:text-sm"
-          >
-            <CircleDollarSign aria-hidden="true" className="size-4" />
-            <span>Get 30-Day VIP — $50</span>
-          </button>
+            <button
+              type="button"
+              onClick={openPaymentIntent}
+              className="md-ripple inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-teal-900/20 transition hover:bg-teal-800 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-teal-300 active:scale-[0.99] sm:px-5 sm:text-sm"
+            >
+              <CircleDollarSign aria-hidden="true" className="size-4" />
+              <span>Get 30-Day VIP — $50</span>
+            </button>
             <button
               type="button"
               onClick={openMessageModal}
@@ -233,7 +281,7 @@ export default function Home() {
           src="/images/hero-bg.jpg"
           alt=""
           fill
-          preload
+          priority
           sizes="100vw"
           className="-z-20 object-cover"
         />
@@ -255,22 +303,22 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col items-start gap-4">
               <div className="flex flex-col items-start gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={openPaymentIntent}
-                className={ctaButton}
-              >
-                <Sparkles aria-hidden="true" className="size-5" />
-                Unlock VIP Access — $50
-              </button>
-              <button
-                type="button"
-                onClick={openMessageModal}
-                className={heroSecondaryButton}
-              >
-                <MessageCircle aria-hidden="true" className="size-5" />
-                Leave a Message
-              </button>
+                <button
+                  type="button"
+                  onClick={openPaymentIntent}
+                  className={ctaButton}
+                >
+                  <Sparkles aria-hidden="true" className="size-5" />
+                  Unlock VIP Access — $50
+                </button>
+                <button
+                  type="button"
+                  onClick={openMessageModal}
+                  className={heroSecondaryButton}
+                >
+                  <MessageCircle aria-hidden="true" className="size-5" />
+                  Leave a Message
+                </button>
               </div>
               <p className="text-sm font-medium text-white/85">
                 30-Day Pass • No Recurring Charges • Bank-Grade Security
@@ -429,6 +477,7 @@ export default function Home() {
         <p>YoTravel helps foreign tourists move through China with local-grade confidence.</p>
       </footer>
 
+      {/* VIP Intent Modal */}
       {isModalOpen ? (
         <div
           aria-labelledby="payment-intent-title"
@@ -516,9 +565,17 @@ export default function Home() {
                   />
                 </label>
 
-                <button type="submit" className={`${ctaButton} w-full`}>
-                  <CreditCard aria-hidden="true" className="size-5" />
-                  Proceed to Payment — $50
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`${ctaButton} w-full`}
+                >
+                  {isSubmitting ? (
+                    <Loader2 aria-hidden="true" className="size-5 animate-spin" />
+                  ) : (
+                    <CreditCard aria-hidden="true" className="size-5" />
+                  )}
+                  {isSubmitting ? "Submitting..." : "Proceed to Payment — $50"}
                 </button>
                 <p className="text-center text-xs leading-5 text-slate-500">
                   Fake-door validation only. Your card will not be charged.
@@ -529,6 +586,7 @@ export default function Home() {
         </div>
       ) : null}
 
+      {/* Message Modal */}
       {isMessageModalOpen ? (
         <div
           aria-labelledby="message-title"
@@ -639,9 +697,17 @@ export default function Home() {
                   />
                 </label>
 
-                <button type="submit" className={`${ctaButton} w-full`}>
-                  <MessageCircle aria-hidden="true" className="size-5" />
-                  Send Message
+                <button
+                  type="submit"
+                  disabled={isMessageSubmitting}
+                  className={`${ctaButton} w-full`}
+                >
+                  {isMessageSubmitting ? (
+                    <Loader2 aria-hidden="true" className="size-5 animate-spin" />
+                  ) : (
+                    <MessageCircle aria-hidden="true" className="size-5" />
+                  )}
+                  {isMessageSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}
