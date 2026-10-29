@@ -7,7 +7,6 @@ import {
   Check,
   CircleDollarSign,
   CreditCard,
-  LockKeyhole,
   Mail,
   MapPinned,
   MessageCircle,
@@ -48,59 +47,59 @@ type MessageCapture = {
 
 const features: Feature[] = [
   {
-    title: "YoTravel Dashboard",
+    title: "Get Ready Before You Land",
     description:
-      'Location-based survival tools, Wi-Fi setup, and "Show-to-Driver" destination cards.',
+      'Prepare mobile data, essential apps, and "Show-to-Driver" destination cards before your trip.',
     icon: MapPinned,
     color: "bg-teal-100 text-teal-800",
   },
   {
-    title: "YoTravel Guides",
+    title: "Payments & Transport Setup",
     description:
-      "Step-by-step interactive guides for foreign passport train bookings and eSIM setup.",
+      "Step-by-step help for Alipay, WeChat Pay, Didi, metro, and high-speed rail essentials.",
     icon: TrainFront,
     color: "bg-indigo-100 text-indigo-800",
   },
   {
-    title: "YoTravel AI Lens",
+    title: "Understand What You See",
     description:
-      "Camera-based visual translation for Chinese menus with allergen & spice alerts.",
+      "Use visual translation for menus and signs, with practical context for everyday travel situations.",
     icon: Camera,
     color: "bg-amber-100 text-amber-800",
   },
   {
-    title: "YoTravel Vault",
+    title: "Real Human Backup",
     description:
-      "AES-256 encrypted storage for passport data and travel itineraries.",
-    icon: LockKeyhole,
+      "When an app, payment, train, or ride problem gets confusing, ask a real person in China for help.",
+    icon: MessageCircle,
     color: "bg-rose-100 text-rose-800",
   },
 ];
 
 const comparisons: ComparisonItem[] = [
   {
-    without: "Payment cards declined",
-    with: "Instant local mobile payments",
+    without: "Payment setup fails after landing",
+    with: "Step-by-step payment setup and troubleshooting",
   },
   {
-    without: "12306 app confusion",
-    with: "Hassle-free train ticketing",
+    without: "Train booking feels unfamiliar",
+    with: "Guided high-speed rail booking support",
   },
   {
-    without: "Menu reading panic",
-    with: "AI ingredient decoder",
+    without: "Menus and signs are hard to understand",
+    with: "Visual translation with practical context",
   },
   {
-    without: "Getting lost without English taxi apps",
-    with: "24/7 human concierge assistance",
+    without: "No one to ask when something goes wrong",
+    with: "Human support daily, 8:00-22:00 China Time",
   },
 ];
 
 const offerItems = [
-  "Unlimited AI Visual Menu Translation",
-  "24/7 Human Concierge Support (8:00 - 22:00)",
-  "High-Speed Rail & Attraction Booking Assistance",
-  "Emergency Priority Routing",
+  "Pre-trip setup guidance for payments, mobile data, and essential apps",
+  "Human support daily, 8:00-22:00 China Time",
+  "High-speed rail, Didi, metro, and local travel assistance",
+  "Priority help when a travel app or local process gets confusing",
 ];
 
 const tripStack: Array<[string, LucideIcon]> = [
@@ -259,7 +258,7 @@ export default function Home() {
               className="md-ripple inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-teal-900/20 transition hover:bg-teal-800 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-4 focus-visible:outline-teal-300 active:scale-[0.99] sm:px-5 sm:text-sm"
             >
               <CircleDollarSign aria-hidden="true" className="size-4" />
-              <span>Get 30-Day VIP — $50</span>
+              <span>Free China Readiness Check</span>
             </button>
             <button
               type="button"
@@ -295,11 +294,10 @@ export default function Home() {
               Built for foreign tourists in China
             </div>
             <h1 className="max-w-5xl text-5xl font-bold leading-[1.02] text-white sm:text-6xl lg:text-7xl">
-              Travel China Like a Local — Zero Tech Barriers.
+              First trip to China? Get ready before you land.
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-white/90 sm:text-xl">
-              Master WeChat & Alipay payments, 12306 high-speed trains, menu
-              translations, and 24/7 localized human support in one app.
+              Prepare payments, mobile data, Didi, metro, and high-speed rail before your trip — with real human help available if something goes wrong after you arrive.
             </p>
             <div className="mt-10 flex flex-col items-start gap-4">
               <div className="flex flex-col items-start gap-3 sm:flex-row">
@@ -309,7 +307,7 @@ export default function Home() {
                   className={ctaButton}
                 >
                   <Sparkles aria-hidden="true" className="size-5" />
-                  Unlock VIP Access — $50
+                  Get a Free Readiness Check
                 </button>
                 <button
                   type="button"
@@ -317,11 +315,11 @@ export default function Home() {
                   className={heroSecondaryButton}
                 >
                   <MessageCircle aria-hidden="true" className="size-5" />
-                  Leave a Message
+                  Ask a China Travel Question
                 </button>
               </div>
               <p className="text-sm font-medium text-white/85">
-                30-Day Pass • No Recurring Charges • Bank-Grade Security
+                Free pre-trip check • No card required • Built for first-time visitors
               </p>
             </div>
           </div>
@@ -348,11 +346,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase text-teal-700">
-              One assistant, four travel systems
+              One place to get China-ready
             </p>
             <h2 className="mt-3 text-3xl font-bold tracking-normal text-slate-950 sm:text-4xl">
-              Everything you need when China’s local apps become mission
-              critical.
+              Set up the essentials before you arrive — and know who to ask when you get stuck.
             </h2>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -381,15 +378,13 @@ export default function Home() {
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
             <div>
               <p className="text-sm font-bold uppercase text-teal-700">
-                Replace travel friction
+                Reduce first-trip friction
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-normal text-slate-950 sm:text-4xl">
-                Turn China’s hardest first-week moments into guided actions.
+                Arrive with the essentials ready instead of figuring everything out under pressure.
               </h2>
               <p className="mt-5 text-base leading-7 text-slate-600">
-                YoTravel gives tourists the local payment, transport,
-                translation, and support layer they normally discover only
-                after something goes wrong.
+                YoTravel helps first-time visitors prepare the systems they will actually use in China — then provides human backup when instructions alone are not enough.
               </p>
             </div>
 
@@ -439,12 +434,10 @@ export default function Home() {
                 30-Day VIP Pass
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-normal text-slate-950 sm:text-4xl">
-                Get concierge-backed travel confidence for $50.
+                Keep human backup for your whole trip for $50.
               </h2>
               <p className="mt-5 text-base leading-7 text-slate-600">
-                Built for travelers who need payments, trains, restaurants, and
-                emergencies solved without switching between unfamiliar local
-                apps.
+                After the free readiness check, upgrade if you want guided help with payments, transport, trains, and local travel questions during your trip.
               </p>
               <button
                 type="button"
@@ -452,7 +445,7 @@ export default function Home() {
                 className={`${ctaButton} mt-8`}
               >
                 <CircleDollarSign aria-hidden="true" className="size-5" />
-                Get YoTravel VIP — $50
+                Start with a Free Readiness Check
               </button>
             </div>
             <div className="rounded-2xl bg-slate-50 p-5">
@@ -474,7 +467,7 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500 sm:px-6 lg:px-8">
-        <p>YoTravel helps foreign tourists move through China with local-grade confidence.</p>
+        <p>YoTravel helps first-time visitors prepare for China and get real help when local apps or travel systems become confusing.</p>
       </footer>
 
       {/* VIP Intent Modal */}
@@ -494,13 +487,13 @@ export default function Home() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-bold uppercase text-teal-700">
-                  YoTravel VIP
+                  Pre-Trip Check
                 </p>
                 <h2
                   id="payment-intent-title"
                   className="mt-2 text-2xl font-bold text-slate-950"
                 >
-                  {isSuccess ? "Priority List Confirmed" : "Reserve VIP Access"}
+                  {isSuccess ? "Readiness Check Requested" : "Free China Readiness Check"}
                 </h2>
               </div>
               <button
@@ -519,10 +512,7 @@ export default function Home() {
                   <Check aria-hidden="true" className="size-6" />
                 </div>
                 <p className="mt-5 text-base leading-7">
-                  ✨ You&apos;re on the YoTravel Priority List! Due to high demand,
-                  daily slots for our 24/7 human concierge are currently full.
-                  Your card was NOT charged. We&apos;ve saved your spot and will
-                  email you an exclusive 20% discount code when your slot opens!
+                  Thanks — we&apos;ve received your request. We&apos;ll review your trip date and email you with a simple China readiness checklist and next-step guidance. No card was required.
                 </p>
                 <button
                   type="button"
@@ -575,10 +565,10 @@ export default function Home() {
                   ) : (
                     <CreditCard aria-hidden="true" className="size-5" />
                   )}
-                  {isSubmitting ? "Submitting..." : "Proceed to Payment — $50"}
+                  {isSubmitting ? "Submitting..." : "Request My Free Check"}
                 </button>
                 <p className="text-center text-xs leading-5 text-slate-500">
-                  Fake-door validation only. Your card will not be charged.
+                  No payment required. We&apos;ll use your email only to follow up on your China travel setup request.
                 </p>
               </form>
             )}
@@ -603,18 +593,17 @@ export default function Home() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-bold uppercase text-teal-700">
-                  Leave a Message
+                  Ask a China Travel Question
                 </p>
                 <h2
                   id="message-title"
                   className="mt-2 text-2xl font-bold text-slate-950"
                 >
-                  Got Questions About Traveling to China?
+                  Have a China Travel Question?
                 </h2>
                 {!isMessageSuccess ? (
                   <p className="mt-3 text-sm leading-6 text-slate-600">
-                    Tell us what you need help with (e.g., Alipay setup, train
-                    tickets, itineraries). Our team will reply within 2 hours!
+                    Tell us what you need help with — for example Alipay setup, mobile data, Didi, metro, or train tickets. We&apos;ll reply as soon as we can during China daytime hours.
                   </p>
                 ) : null}
               </div>
@@ -634,9 +623,7 @@ export default function Home() {
                   <Check aria-hidden="true" className="size-6" />
                 </div>
                 <p className="mt-5 text-base leading-7">
-                  ✨ Message Received! Thanks for reaching out. We&apos;ve sent
-                  a confirmation to your email and will get back to you shortly
-                  with tailored travel advice.
+                  Thanks — your question has been received. We&apos;ll get back to you with practical next-step guidance.
                 </p>
                 <button
                   type="button"
